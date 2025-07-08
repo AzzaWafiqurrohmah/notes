@@ -13,12 +13,26 @@ const localContent = ref('')
 
 watch(
   () => props.note,
-  n => {
-    localTitle.value = n?.title || ''
-    localContent.value = n?.content || ''
+  (n) => {
+    if (n) {
+      localTitle.value = n.title
+      localContent.value = n.content
+    }
   },
   { immediate: true }
 )
+
+watch(
+  () => props.open,
+  (isOpen) => {
+    if (isOpen && !props.note) {
+      localTitle.value = ''
+      localContent.value = ''
+    }
+  }
+)
+
+
 
 const editMode = computed(() => !!props.note)
 
