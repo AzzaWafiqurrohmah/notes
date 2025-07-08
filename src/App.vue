@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useNotesStore } from './stores/notes'
 import NoteModal from './components/NoteModal.vue'
 
@@ -21,6 +21,17 @@ function editNote (note, index) {
   showModal.value = true
 }
 
+// search
+const searchKeyword = ref('')
+const filteredNotes = computed(() => {
+  if (!searchKeyword.value) return store.notes
+
+  return store.notes.filter(note =>
+    note.title.toLowerCase().includes(searchKeyword.value.toLowerCase()) ||
+    note.content.toLowerCase().includes(searchKeyword.value.toLowerCase())
+  )
+})
+
 </script>
 
 <template>
@@ -36,10 +47,21 @@ function editNote (note, index) {
         </button>
       </div>
 
+      <!-- Input Search -->
+      <div class="mb-6">
+        <input
+          v-model="searchKeyword"
+          type="text"
+          placeholder="Cari catatan..."
+          class="w-full p-3 border rounded text-base"
+        />
+      </div>
+
+
       <!-- Daftar Catatan -->
       <div class="grid sm:grid-cols-2 gap-6">
         <div
-          v-for="(note, index) in store.notes"
+          v-for="(note, index) in filteredNotes"
           :key="index"
           class="bg-white p-5 rounded-lg border border-gray-300 shadow-md space-y-2"
         >
