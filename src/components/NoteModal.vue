@@ -53,7 +53,8 @@ function handleSave () {
     <!-- modal card -->
     <form
         @submit.prevent="handleSave"
-        class="bg-white w-full max-w-md rounded-2xl p-4 sm:p-6 space-y-4 shadow-xl border border-gray-100 transition-all duration-300"
+        class="mx-4 sm:mx-0 max-w-md bg-white rounded-2xl p-4 sm:p-6 space-y-4
+         shadow-xl border border-gray-100 transition-all duration-300"
         >
         <!-- Judul Modal + Garis -->
         <div>
