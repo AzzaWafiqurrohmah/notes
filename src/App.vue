@@ -32,6 +32,11 @@ const filteredNotes = computed(() => {
   )
 })
 
+const noMatch = computed(() =>
+  searchKeyword.value && filteredNotes.value.length === 0 && store.notes.length > 0
+)
+
+
 </script>
 
 <template>
@@ -57,32 +62,37 @@ const filteredNotes = computed(() => {
         />
       </div>
 
-
-      <!-- Daftar Catatan -->
+      <!-- Daftar Catatan -->
       <div class="grid sm:grid-cols-2 gap-6">
-        <!-- NEW: kondisi jika array kosong -->
+        <!-- Kondisi: belum ada catatan -->
         <div
-          v-if="filteredNotes.length === 0"
+          v-if="store.notes.length === 0"
           class="col-span-full text-center text-gray-500 italic py-10"
         >
           Belum ada catatan. Yuk bikin catatan baru! ✍️
         </div>
 
-        <!-- Loop catatan -->
+        <!-- Kondisi: hasil pencarian tidak cocok -->
+        <div
+          v-else-if="noMatch"
+          class="col-span-full text-center text-gray-500 italic py-10"
+        >
+          Tidak ada catatan yang cocok dengan “{{ searchKeyword }}”.
+        </div>
+
+        <!-- Daftar catatan -->
         <div
           v-for="(note, index) in filteredNotes"
           :key="index"
-          class="bg-white p-5 rounded-lg border border-gray-300 shadow-md"
+          class="bg-white p-5 rounded-lg border border-gray-300 shadow-md space-y-2"
         >
-          <h2 class="text-xl font-bold text-indigo-800 mb-2">
+          <h2 class="text-xl font-bold text-indigo-800">
             {{ note.title }}
           </h2>
           <p class="text-sm text-gray-600 whitespace-pre-line leading-relaxed">
             {{ note.content }}
           </p>
-
-          <!-- Tombol Edit & Hapus (tetap) -->
-          <div class="flex justify-end gap-2 pt-3 border-t">
+          <div class="flex justify-end gap-3 pt-3 border-t border-gray-200">
             <button
               @click="editNote(note, index)"
               class="text-indigo-600 hover:underline text-sm"
@@ -98,8 +108,6 @@ const filteredNotes = computed(() => {
           </div>
         </div>
       </div>
-
-
 
       <!-- Modal -->
       <NoteModal
