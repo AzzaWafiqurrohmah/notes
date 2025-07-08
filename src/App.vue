@@ -58,22 +58,31 @@ const filteredNotes = computed(() => {
       </div>
 
 
-      <!-- Daftar Catatan -->
+      <!-- Daftar Catatan -->
       <div class="grid sm:grid-cols-2 gap-6">
+        <!-- NEW: kondisi jika array kosong -->
+        <div
+          v-if="filteredNotes.length === 0"
+          class="col-span-full text-center text-gray-500 italic py-10"
+        >
+          Belum ada catatan. Yuk bikin catatan baru! ✍️
+        </div>
+
+        <!-- Loop catatan -->
         <div
           v-for="(note, index) in filteredNotes"
           :key="index"
-          class="bg-white p-5 rounded-lg border border-gray-300 shadow-md space-y-2"
+          class="bg-white p-5 rounded-lg border border-gray-300 shadow-md"
         >
-          <h2 class="text-xl font-bold text-indigo-800">
+          <h2 class="text-xl font-bold text-indigo-800 mb-2">
             {{ note.title }}
           </h2>
           <p class="text-sm text-gray-600 whitespace-pre-line leading-relaxed">
             {{ note.content }}
-          </p>  
+          </p>
 
-          <!-- Tombol Edit & Hapus -->
-          <div class="flex justify-end gap-2 pt-3 border-t pt-3">
+          <!-- Tombol Edit & Hapus (tetap) -->
+          <div class="flex justify-end gap-2 pt-3 border-t">
             <button
               @click="editNote(note, index)"
               class="text-indigo-600 hover:underline text-sm"
@@ -89,6 +98,7 @@ const filteredNotes = computed(() => {
           </div>
         </div>
       </div>
+
 
 
       <!-- Modal -->
