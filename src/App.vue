@@ -1,9 +1,14 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useNotesStore } from './stores/notes'
 import NoteModal from './components/NoteModal.vue'
 
 const store = useNotesStore()
+
+onMounted(() => {
+  store.initLocalStorageWatcher()
+})
+
 const showModal = ref(false)
 const noteToEdit = ref(null)
 
